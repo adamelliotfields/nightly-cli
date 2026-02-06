@@ -4,11 +4,10 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { styleText } from 'node:util'
 
-import { Command } from 'commander'
-
+import { parseCli } from './lib/cli.ts'
 import { centralNow, formatDatePath, resolveDate } from './lib/date.ts'
 import { extractErrorMessage, fetchJson } from './lib/fetch.ts'
-import { mergeRepos, printList, type Repo, stripFinalNewline } from './lib/format.ts'
+import { mergeRepos, printList, type Repo } from './lib/format.ts'
 
 type NightlyData = {
   top_new?: Repo[]
@@ -61,38 +60,17 @@ async function run(dateStr: string | undefined, options: { limit?: string; color
   printList(combined, nowDate, useColor, limit)
 }
 
-const program = new Command()
-
-program
-  .name(programName)
-  .description(programDescription)
-  .version(programVersion, '-v, --version')
-  .argument('[date]', 'YYYYMMDD, YYYY-MM-DD, or YYYY/MM/DD')
-  .option('-l, --limit <number>', 'limit number of repos displayed')
-  .option('--no-color', 'disable ANSI colors in output')
-
-program.configureOutput({
-  writeOut: (str) => process.stdout.write(stripFinalNewline(str)),
-  writeErr: (str) => process.stderr.write(stripFinalNewline(str))
+const cli = parseCli(process.argv.slice(2), {
+  name: programName,
+  description: programDescription,
+  version: programVersion
 })
 
-program.addHelpText(
-  'after',
-  `
-Examples:
-  ${programName}               Show most recent trending repos
-  ${programName} 20250115      Show repos for January 15, 2025
-  ${programName} 2025-01-15    Same, with dashes
-  ${programName} 2025/01/15    Same, with slashes
-  ${programName} -l 5          Limit output to 5 repos
-`
-)
+if (cli.type === 'exit') {
+  process.exit(cli.code)
+}
 
-program.action(async (dateArg: string | undefined, options) => {
-  await run(dateArg, options)
-})
-
-program.parseAsync().catch((err) => {
+run(cli.date, cli.options).catch((err) => {
   console.error(`Error: ${err.message}`)
   process.exit(1)
 })
