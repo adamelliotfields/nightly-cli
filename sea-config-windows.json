@@ -1,0 +1,8 @@
+{
+  "main": "dist/nightly.cjs",
+  "output": "dist/nightly.exe",
+  "disableExperimentalSEAWarning": true,
+  "assets": {
+    "package.json": "./package.json"
+  }
+}

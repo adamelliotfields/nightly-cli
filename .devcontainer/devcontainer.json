@@ -1,0 +1,6 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/typescript-node",
+  "containerEnv": {
+    "GH_TOKEN": "${localEnv:GH_TOKEN}"
+  }
+}
