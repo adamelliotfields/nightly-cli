@@ -26,5 +26,5 @@ Sleep 300ms
 Type "nightly --limit 3 20260205"
 Sleep 500ms
 Enter
-Wait+Screen /★/
+Wait+Screen /CHANGELOG NIGHTLY/
 Sleep 4s

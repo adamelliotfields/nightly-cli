@@ -8,6 +8,7 @@ This is a command-line interface for fetching and displaying trending GitHub rep
 .
 ├── src/
 │   ├── lib/
+│   │   ├── cli.ts
 │   │   ├── date.ts
 │   │   ├── fetch.ts
 │   │   └── format.ts
@@ -25,7 +26,8 @@ This is a command-line interface for fetching and displaying trending GitHub rep
 
 ## Preferences
 
-- **Always use** `pnpm` to install dependencies and run commands.
+- No production dependencies.
+- Use `pnpm` to install dev dependencies and run commands.
 - Use **Standard JS** code style:
   * `printWidth`: 100
   * `tabWidth`: 2
@@ -58,4 +60,4 @@ The primary installation method is `npm i -g .`.
 
 The `bin` field in `package.json` points to `src/index.ts`, which requires a minimum of Node 22.18.0 for TypeScript support.
 
-We only support Node 25.5.0 and newer for building a single executable application (SEA). This requires bundling `dist/nightly.cjs` with `rolldown` first with `pnpm build` followed by `npm run build:bin` or `npm run build:exe`. Note that we need to run the final build commands with `npm` not `pnpm` for `$npm_node_execpath` to be set.
+We only support Node 25.5.0 and newer for building a single executable application (SEA). This requires bundling `dist/nightly.cjs` with `rolldown` first via `pnpm build` followed by `npm run build:bin` or `npm run build:exe`. Note that we need to run the final build command with `npm` not `pnpm` for `$npm_node_execpath` to be set.
