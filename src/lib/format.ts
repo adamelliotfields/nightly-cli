@@ -114,7 +114,7 @@ export function formatRepoLines(repo: Repo, nowDate: Date, useColor: boolean): s
     ]
   }
 
-  return [name, description, url, byline]
+  return [name, description, byline, url]
 }
 
 /** Print a list of repos. */
