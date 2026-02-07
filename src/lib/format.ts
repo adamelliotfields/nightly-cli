@@ -90,7 +90,7 @@ export function formatRepoLines(repo: Repo, nowDate: Date, useColor: boolean): s
   const name = repo.full_name || repo.name || repo.url || 'unknown'
   const language = (repo.language || 'unknown').toLowerCase()
   const stars = repo.stargazers_count
-  const starsStr = stars !== undefined ? `★ ${Number(stars).toLocaleString()}` : '★ ?'
+  const starsStr = stars !== undefined ? `${Number(stars).toLocaleString()} stars` : '? stars'
   const description = repo.description ? decodeEntities(repo.description) : '(no description)'
   const url = repo.html_url || repo.url || 'unknown'
   const createdAt = repo.created_at || ''
@@ -109,8 +109,8 @@ export function formatRepoLines(repo: Repo, nowDate: Date, useColor: boolean): s
     return [
       styleText('cyan', name),
       description,
-      styleText('gray', url),
-      styleText(['dim', 'gray'], byline)
+      styleText('gray', byline),
+      styleText(['dim', 'gray'], url)
     ]
   }
 
