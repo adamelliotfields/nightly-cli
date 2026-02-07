@@ -117,7 +117,7 @@ export function formatRepoLines(repo: Repo, nowDate: Date, useColor: boolean): s
   return [name, description, url, byline]
 }
 
-/** Print a list of repos to stdout. */
+/** Print a list of repos. */
 export function printList(
   items: Repo[],
   nowDate: Date,
@@ -125,7 +125,7 @@ export function printList(
   limit: number | undefined
 ): void {
   if (items.length === 0) {
-    process.stdout.write('(no repos)')
+    console.log('(no repos)')
     return
   }
 
@@ -145,16 +145,6 @@ export function printList(
     }
   }
 
-  process.stdout.write(outputLines.join('\n'))
-}
-
-/** https://github.com/sindresorhus/strip-final-newline */
-export function stripFinalNewline(value: string) {
-  const LF = '\n'.codePointAt(0)
-  const CR = '\r'.codePointAt(0)
-  const last = value.codePointAt(value.length - 1)
-  if (last !== LF) return value
-
-  const penultimate = value.codePointAt(value.length - 2)
-  return value.slice(0, penultimate === CR ? -2 : -1)
+  // Final newline
+  console.log(outputLines.join('\n'))
 }
