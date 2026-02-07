@@ -14,16 +14,16 @@ Set TypingSpeed 50ms
 Set CursorBlink false
 
 # Show help
+Sleep 300ms
 Type "nightly --help"
 Sleep 500ms
 Enter
-Sleep 1s
-Sleep 3s
+Sleep 4s
 
 # Clear and show trending repos
 Ctrl+L
 Sleep 300ms
-Type "nightly -l 3"
+Type "nightly --limit 3 20260205"
 Sleep 500ms
 Enter
 Wait+Screen /★/
