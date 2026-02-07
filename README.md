@@ -2,6 +2,8 @@
 
 An unofficial CLI for the [Changelog Nightly](https://changelog.com/nightly) newsletter.
 
+![demo](./demo.gif)
+
 ## Installation
 
 ```sh

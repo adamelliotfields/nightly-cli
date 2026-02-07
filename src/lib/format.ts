@@ -145,16 +145,6 @@ export function printList(
     }
   }
 
-  process.stdout.write(outputLines.join('\n'))
-}
-
-/** https://github.com/sindresorhus/strip-final-newline */
-export function stripFinalNewline(value: string) {
-  const LF = '\n'.codePointAt(0)
-  const CR = '\r'.codePointAt(0)
-  const last = value.codePointAt(value.length - 1)
-  if (last !== LF) return value
-
-  const penultimate = value.codePointAt(value.length - 2)
-  return value.slice(0, penultimate === CR ? -2 : -1)
+  // Final newline
+  process.stdout.write(outputLines.join('\n') + '\n')
 }

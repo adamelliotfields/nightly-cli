@@ -1,5 +1,3 @@
-import { stripFinalNewline } from './format.ts'
-
 export type CliConfig = {
   name: string
   description: string
@@ -46,11 +44,11 @@ Examples:
 }
 
 function writeOut(value: string) {
-  process.stdout.write(stripFinalNewline(value))
+  process.stdout.write(value)
 }
 
 function writeErr(value: string) {
-  process.stderr.write(stripFinalNewline(value))
+  process.stderr.write(value)
 }
 
 function fail(config: CliConfig, message: string): CliResult {
