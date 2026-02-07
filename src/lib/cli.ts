@@ -39,20 +39,11 @@ Examples:
   ${config.name} 20250115      Show repos for January 15, 2025
   ${config.name} 2025-01-15    Same, with dashes
   ${config.name} 2025/01/15    Same, with slashes
-  ${config.name} -l 5          Limit output to 5 repos
-`
-}
-
-function writeOut(value: string) {
-  process.stdout.write(value)
-}
-
-function writeErr(value: string) {
-  process.stderr.write(value)
+  ${config.name} -l 5          Limit output to 5 repos`
 }
 
 function fail(config: CliConfig, message: string): CliResult {
-  writeErr(`Error: ${message}\nRun '${config.name} --help' for usage.\n`)
+  console.error(`Error: ${message}\nRun '${config.name} --help' for usage.`)
   return { type: 'exit', code: 1 }
 }
 
@@ -74,12 +65,12 @@ export function parseCli(args: string[], config: CliConfig): CliResult {
     }
 
     if (arg === '--help' || arg === '-h') {
-      writeOut(helpText(config))
+      console.log(helpText(config))
       return { type: 'exit', code: 0 }
     }
 
     if (arg === '--version' || arg === '-v') {
-      writeOut(`${config.version}\n`)
+      console.log(config.version)
       return { type: 'exit', code: 0 }
     }
 

@@ -117,7 +117,7 @@ export function formatRepoLines(repo: Repo, nowDate: Date, useColor: boolean): s
   return [name, description, url, byline]
 }
 
-/** Print a list of repos to stdout. */
+/** Print a list of repos. */
 export function printList(
   items: Repo[],
   nowDate: Date,
@@ -125,7 +125,7 @@ export function printList(
   limit: number | undefined
 ): void {
   if (items.length === 0) {
-    process.stdout.write('(no repos)')
+    console.log('(no repos)')
     return
   }
 
@@ -146,5 +146,5 @@ export function printList(
   }
 
   // Final newline
-  process.stdout.write(outputLines.join('\n') + '\n')
+  console.log(outputLines.join('\n'))
 }
