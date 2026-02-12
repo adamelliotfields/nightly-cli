@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
+import { getAsset, isSea } from 'node:sea'
 import { fileURLToPath } from 'node:url'
 
 import { parseCli } from './lib/cli.ts'
@@ -14,8 +15,15 @@ type NightlyData = {
   top_all?: Repo[]
 }
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const pkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf-8'))
+let pkg: { name: string; version: string; description: string }
+
+if (isSea()) {
+  pkg = JSON.parse(getAsset('package.json', 'utf8'))
+} else {
+  const __dirname = dirname(fileURLToPath(import.meta.url))
+  pkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf-8'))
+}
+
 const programName = pkg.name.replace(/-cli$/, '')
 const programVersion = pkg.version
 const programDescription = pkg.description
