@@ -1,6 +1,5 @@
-import { styleText } from 'node:util'
-
 import { parseDateOnly, relativeDateLabel } from './date.ts'
+import { ANSI, COLOR, sgr } from './style.ts'
 
 export type Repo = {
   full_name?: string
@@ -89,31 +88,33 @@ export function mergeRepos(topNew: Repo[], topAll: Repo[]): Repo[] {
 export function formatRepoLines(repo: Repo, nowDate: Date, useColor: boolean): string[] {
   const name = repo.full_name || repo.name || repo.url || 'unknown'
   const language = (repo.language || 'unknown').toLowerCase()
-  const stars = repo.stargazers_count
-  const starsStr = stars !== undefined ? `${Number(stars).toLocaleString()} stars` : '? stars'
   const description = repo.description ? decodeEntities(repo.description) : '(no description)'
   const url = repo.html_url || repo.url || 'unknown'
   const createdAt = repo.created_at || ''
+  const stargazers = repo.stargazers_count
+  const stars =
+    stargazers !== undefined ? `${Number(stargazers).toLocaleString()} stars` : '? stars'
 
-  let createdLabel = 'unknown'
+  let created = 'unknown'
   if (createdAt) {
     const createdDate = parseDateOnly(createdAt.trim())
     if (createdDate) {
-      createdLabel = relativeDateLabel(createdDate, nowDate)
+      created = relativeDateLabel(createdDate, nowDate)
     }
   }
 
-  const byline = [starsStr, createdLabel, language].join(' · ')
-
   if (useColor) {
-    return [
-      styleText('cyan', name),
-      description,
-      styleText('gray', byline),
-      styleText(['dim', 'gray'], url)
-    ]
+    const sgrSep = sgr(' · ', ANSI.DIM, COLOR.GRAY_5)
+    const sgrStars = sgr(stars, COLOR.YELLOW_5)
+    const sgrCreated = sgr(created, COLOR.TEAL_5)
+    const sgrLanguage = sgr(language, COLOR.GRAPE_5)
+    const sgrName = sgr(name, ANSI.BOLD, COLOR.CYAN_5)
+    const sgrUrl = sgr(url, ANSI.UNDERLINE, COLOR.GRAY_5)
+    const byline = sgrStars + sgrSep + sgrCreated + sgrSep + sgrLanguage
+    return [sgrName, description, byline, sgrUrl]
   }
 
+  const byline = [stars, created, language].join(' · ')
   return [name, description, byline, url]
 }
 
@@ -134,8 +135,14 @@ export function printList(
   for (const repo of items) {
     if (typeof limit !== 'undefined' && shown >= limit) break
 
-    for (const line of formatRepoLines(repo, nowDate, useColor)) {
-      outputLines.push(line)
+    const lines = formatRepoLines(repo, nowDate, useColor)
+    if (lines.length > 0) {
+      const number = String(shown + 1).padStart(2, '0')
+      const displayNumber = useColor ? sgr(number, ANSI.DIM, COLOR.GRAY_5) : number
+      outputLines.push(`${displayNumber} ${lines[0]}`)
+      for (const line of lines.slice(1)) {
+        outputLines.push(`   ${line}`) // indent 3 spaces
+      }
     }
     shown += 1
 

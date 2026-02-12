@@ -101,11 +101,9 @@ export function parseCli(args: string[], config: CliConfig): CliResult {
       continue
     }
 
-    if (arg.startsWith('-')) {
-      return fail(config, `unknown option '${arg}'`)
-    }
-
+    if (arg.startsWith('-')) return fail(config, `unknown option '${arg}'`)
     if (date) return fail(config, 'too many arguments')
+
     date = arg
   }
 

@@ -2,12 +2,12 @@
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { styleText } from 'node:util'
 
 import { parseCli } from './lib/cli.ts'
 import { centralNow, formatDatePath, resolveDate } from './lib/date.ts'
 import { extractErrorMessage, fetchJson } from './lib/fetch.ts'
 import { mergeRepos, printList, type Repo } from './lib/format.ts'
+import { ANSI, border, COLOR, sgr } from './lib/style.ts'
 
 type NightlyData = {
   top_new?: Repo[]
@@ -48,12 +48,18 @@ async function run(dateStr: string | undefined, options: { limit?: string; color
   const appTitle = 'CHANGELOG NIGHTLY'
   const appLink = url.replace('/data.json', '')
 
-  console.log(appTitle)
-  console.log(useColor ? styleText('gray', appLink) : appLink)
+  if (useColor) {
+    const lines = border(
+      [sgr(appTitle, ANSI.BOLD, COLOR.CYAN_5), sgr(appLink, COLOR.GRAY_5)],
+      COLOR.GRAY_5
+    )
+    console.log(lines.join('\n'))
+  } else {
+    console.log(appTitle)
+    console.log(appLink)
+  }
 
   if (combined.length > 0) {
-    const rule = '─'.repeat(appLink.length)
-    console.log(useColor ? styleText(['dim', 'gray'], rule) : rule)
     console.log()
   }
 

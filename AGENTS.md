@@ -44,7 +44,9 @@ This is a command-line interface for fetching and displaying trending GitHub rep
 
 ## Types
 
-Run `pnpm check` to check for TypeScript errors. Note that we are using `@typescript/native-preview`, which uses the `tsgo` executable not `tsc`.
+Run `pnpm check` to check for TypeScript errors.
+
+We are using `@typescript/native-preview`, which uses the `tsgo` executable not `tsc`.
 
 ## Linting
 
@@ -56,8 +58,8 @@ No tests have been implemented yet. Prefer `node:assert` and `node:test`.
 
 ## Building
 
-The primary installation method is `npm i -g .`.
-
 The `bin` field in `package.json` points to `src/index.ts`, which requires a minimum of Node 22.18.0 for TypeScript support.
 
-We only support Node 25.5.0 and newer for building a single executable application (SEA). This requires bundling `dist/nightly.cjs` with `rolldown` first via `pnpm build` followed by `npm run build:bin` or `npm run build:exe`. Note that we need to run the final build command with `npm` not `pnpm` for `$npm_node_execpath` to be set.
+We only support Node 25.5.0 and newer for building a single executable application (SEA). This requires bundling `dist/nightly.cjs` with `rolldown` first via `pnpm build` followed by `npm run build:bin` or `npm run build:exe`.
+
+We need to run the final build command with `npm` not `pnpm` for `$npm_node_execpath` to be set.
