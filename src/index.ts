@@ -18,7 +18,7 @@ type NightlyData = {
 let pkg: { name: string; version: string; description: string }
 
 if (isSea()) {
-  pkg = JSON.parse(getAsset('package.json', 'utf8'))
+  pkg = JSON.parse(getAsset('package.json', 'utf-8'))
 } else {
   const __dirname = dirname(fileURLToPath(import.meta.url))
   pkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf-8'))
