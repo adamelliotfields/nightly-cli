@@ -4,20 +4,50 @@ export function parseDate(value: string): Date {
   const message = 'Date must be in YYYYMMDD, YYYY-MM-DD, or YYYY/MM/DD format'
 
   if (trimmed.includes('/') || trimmed.includes('-')) {
-    const parts = trimmed.split(trimmed.includes('/') ? '/' : '-')
-    if (parts.length !== 3) throw new Error(message)
-    const [year, month, day] = parts.map(Number)
-    return new Date(year, month - 1, day)
+    const delimiter = trimmed.includes('/') ? '/' : '-'
+    const parts = trimmed.split(delimiter)
+
+    // Dates have 3 parts and the year is always 4 digits
+    if (
+      parts.length !== 3 ||
+      parts[0].length !== 4 ||
+      parts[1].length !== 2 ||
+      parts[2].length !== 2 ||
+      !parts.every((part) => /^\d+$/.test(part))
+    ) {
+      throw new Error(message)
+    }
+
+    const [year, month, day] = parts.map((part) => Number.parseInt(part, 10))
+    return createValidDate(year, month, day, message)
   }
 
-  if (trimmed.length === 8 && /^\d+$/.test(trimmed)) {
-    const year = parseInt(trimmed.slice(0, 4), 10)
-    const month = parseInt(trimmed.slice(4, 6), 10)
-    const day = parseInt(trimmed.slice(6, 8), 10)
-    return new Date(year, month - 1, day)
+  if (/^\d{8}$/.test(trimmed)) {
+    const year = Number.parseInt(trimmed.slice(0, 4), 10)
+    const month = Number.parseInt(trimmed.slice(4, 6), 10)
+    const day = Number.parseInt(trimmed.slice(6, 8), 10)
+    return createValidDate(year, month, day, message)
   }
 
   throw new Error(message)
+}
+
+/** Create a Date object and validate that the components are correct. */
+export function createValidDate(year: number, month: number, day: number, message: string): Date {
+  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
+    throw new Error(message)
+  }
+
+  if (month < 1 || month > 12 || day < 1 || day > 31) {
+    throw new Error(message)
+  }
+
+  const date = new Date(year, month - 1, day)
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+    throw new Error(message)
+  }
+
+  return date
 }
 
 /** Parse just the date portion from a datetime string. */
