@@ -5,8 +5,8 @@ Require nightly
 Set Shell "bash"
 Set FontFamily "MonoLisa Nerd Font"
 Set FontSize 14
-Set Width 900
-Set Height 500
+Set Width 960
+Set Height 540
 Set Theme "Catppuccin Mocha"
 Set WindowBar Colorful
 Set Padding 20
