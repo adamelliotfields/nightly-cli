@@ -39,8 +39,8 @@ Examples:
   ${config.name} 20250115      Show repos for January 15, 2025
   ${config.name} 2025-01-15    Same, with dashes
   ${config.name} 2025/01/15    Same, with slashes
-  ${config.name} 0             Show repos for the default issue
-  ${config.name} -1            Show repos for yesterday's issue
+  ${config.name} 0             Show repos for the default date
+  ${config.name} -1            Show repos for yesterday's date
   ${config.name} -l 5          Limit output to 5 repos`
 }
 
