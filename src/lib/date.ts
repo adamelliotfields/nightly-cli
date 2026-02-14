@@ -88,12 +88,18 @@ export function centralNow(): Date {
 
 /** Resolve date string or default to yesterday/today based on 10pm cutoff. */
 export function resolveDate(dateStr: string | undefined): Date {
-  if (dateStr) return parseDate(dateStr)
   const now = centralNow()
-  if (now.getHours() < 22) {
-    return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+  const baseDate =
+    now.getHours() < 22
+      ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+      : new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  if (!dateStr) return baseDate
+  const trimmed = dateStr.trim()
+  if (/^-\d+$/.test(trimmed)) {
+    const offset = Number.parseInt(trimmed, 10)
+    return new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate() + offset)
   }
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  return parseDate(trimmed)
 }
 
 /** Format a date as YYYY/MM/DD. */
