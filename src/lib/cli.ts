@@ -26,7 +26,7 @@ function helpText(config: CliConfig): string {
 ${config.description}
 
 Arguments:
-  date                  YYYYMMDD, YYYY-MM-DD, YYYY/MM/DD, or offset (0, -1)
+  date                  YYYYMMDD, YYYY-MM-DD, YYYY/MM/DD, or negative offset
 
 Options:
   -v, --version         output the version number
@@ -111,6 +111,7 @@ export function parseCli(args: string[], config: CliConfig): CliResult {
       }
       return fail(config, `unknown option '${arg}'`)
     }
+
     if (date) return fail(config, 'too many arguments')
 
     date = arg

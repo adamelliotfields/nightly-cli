@@ -1,7 +1,7 @@
 /** Parse a date string in YYYYMMDD, YYYY-MM-DD, or YYYY/MM/DD format. */
 export function parseDate(value: string): Date {
   const trimmed = value.trim()
-  const message = 'Date must be in YYYYMMDD, YYYY-MM-DD, or YYYY/MM/DD format'
+  const message = 'Date must be in YYYYMMDD, YYYY-MM-DD, YYYY/MM/DD format or a negative offset'
 
   if (trimmed.includes('/') || trimmed.includes('-')) {
     const delimiter = trimmed.includes('/') ? '/' : '-'
@@ -95,7 +95,7 @@ export function resolveDate(dateStr: string | undefined): Date {
       : new Date(now.getFullYear(), now.getMonth(), now.getDate())
   if (!dateStr) return baseDate
   const trimmed = dateStr.trim()
-  if (trimmed === '0' || /^-\d+$/.test(trimmed)) {
+  if (/^-\d+$/.test(trimmed)) {
     const offset = Number.parseInt(trimmed, 10)
     return new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate() + offset)
   }
