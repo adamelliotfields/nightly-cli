@@ -95,7 +95,7 @@ export function resolveDate(dateStr: string | undefined): Date {
       : new Date(now.getFullYear(), now.getMonth(), now.getDate())
   if (!dateStr) return baseDate
   const trimmed = dateStr.trim()
-  if (/^-\d+$/.test(trimmed)) {
+  if (trimmed === '0' || /^-\d+$/.test(trimmed)) {
     const offset = Number.parseInt(trimmed, 10)
     return new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate() + offset)
   }

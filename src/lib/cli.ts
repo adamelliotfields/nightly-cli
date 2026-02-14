@@ -26,7 +26,7 @@ function helpText(config: CliConfig): string {
 ${config.description}
 
 Arguments:
-  date                  YYYYMMDD, YYYY-MM-DD, or YYYY/MM/DD
+  date                  YYYYMMDD, YYYY-MM-DD, YYYY/MM/DD, or offset (0, -1)
 
 Options:
   -v, --version         output the version number
@@ -39,6 +39,8 @@ Examples:
   ${config.name} 20250115      Show repos for January 15, 2025
   ${config.name} 2025-01-15    Same, with dashes
   ${config.name} 2025/01/15    Same, with slashes
+  ${config.name} 0             Show repos for the default issue
+  ${config.name} -1            Show repos for yesterday's issue
   ${config.name} -l 5          Limit output to 5 repos`
 }
 
@@ -101,7 +103,14 @@ export function parseCli(args: string[], config: CliConfig): CliResult {
       continue
     }
 
-    if (arg.startsWith('-')) return fail(config, `unknown option '${arg}'`)
+    if (arg.startsWith('-')) {
+      if (/^-\d+$/.test(arg)) {
+        if (date) return fail(config, 'too many arguments')
+        date = arg
+        continue
+      }
+      return fail(config, `unknown option '${arg}'`)
+    }
     if (date) return fail(config, 'too many arguments')
 
     date = arg
