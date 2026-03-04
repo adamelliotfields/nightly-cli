@@ -7,6 +7,7 @@ export type CliConfig = {
 export type CliOptions = {
   limit?: string
   color?: boolean
+  json?: boolean
 }
 
 export type CliResult =
@@ -31,6 +32,7 @@ Arguments:
 Options:
   -v, --version         output the version number
   -l, --limit <number>  limit number of repos displayed
+  --json                output raw JSON
   --no-color            disable ANSI colors in output
   -h, --help            display help for command
 
@@ -73,6 +75,11 @@ export function parseCli(args: string[], config: CliConfig): CliResult {
     if (arg === '--version' || arg === '-v') {
       console.log(config.version)
       return { type: 'exit', code: 0 }
+    }
+
+    if (arg === '--json') {
+      options.json = true
+      continue
     }
 
     if (arg === '--no-color') {

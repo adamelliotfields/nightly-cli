@@ -118,6 +118,20 @@ export function formatRepoLines(repo: Repo, nowDate: Date, useColor: boolean): s
   return [name, description, byline, url]
 }
 
+/** Print repos as JSON, projecting only the fields shown in terminal output. */
+export function printJson(items: Repo[], limit: number | undefined): void {
+  const repos = typeof limit !== 'undefined' ? items.slice(0, limit) : items
+  const output = repos.map((repo) => ({
+    name: repo.full_name || repo.name || null,
+    description: repo.description ? decodeEntities(repo.description) : null,
+    url: repo.html_url || repo.url || null,
+    language: repo.language || null,
+    stars: repo.stargazers_count ?? null,
+    created_at: repo.created_at || null
+  }))
+  console.log(JSON.stringify(output, null, 2))
+}
+
 /** Print a list of repos. */
 export function printList(
   items: Repo[],

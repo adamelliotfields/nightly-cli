@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { parseCli } from './lib/cli.ts'
 import { centralNow, formatDatePath, resolveDate } from './lib/date.ts'
 import { extractErrorMessage, fetchJson } from './lib/fetch.ts'
-import { mergeRepos, printList, type Repo } from './lib/format.ts'
+import { mergeRepos, printJson, printList, type Repo } from './lib/format.ts'
 import { ANSI, border, COLOR, sgr } from './lib/style.ts'
 
 type NightlyData = {
@@ -32,7 +32,10 @@ function buildUrl(date: Date): string {
   return `https://nightly.changelog.com/${formatDatePath(date)}/data.json`
 }
 
-async function run(dateStr: string | undefined, options: { limit?: string; color?: boolean }) {
+async function run(
+  dateStr: string | undefined,
+  options: { limit?: string; color?: boolean; json?: boolean }
+) {
   const date = resolveDate(dateStr)
   const url = buildUrl(date)
   const useColor = options.color !== false
@@ -50,9 +53,14 @@ async function run(dateStr: string | undefined, options: { limit?: string; color
   const topAll = data.top_all ?? []
   const combined = mergeRepos(topNew, topAll)
 
-  const nowDate = centralNow()
   const limit = options.limit ? parseInt(options.limit, 10) : undefined
 
+  if (options.json) {
+    printJson(combined, limit)
+    return
+  }
+
+  const nowDate = centralNow()
   const appTitle = 'CHANGELOG NIGHTLY'
   const appLink = url.replace('/data.json', '')
 
