@@ -18,13 +18,22 @@ Sleep 300ms
 Type "nightly --help"
 Sleep 500ms
 Enter
-Sleep 4s
+Sleep 3s
 
 # Clear and show trending repos
 Ctrl+L
 Sleep 300ms
-Type "nightly --limit 3 20260205"
+Type "nightly --limit 3 20260303"
 Sleep 500ms
 Enter
 Wait+Screen /CHANGELOG NIGHTLY/
-Sleep 4s
+Sleep 3s
+
+# Clear and show JSON
+Ctrl+L
+Sleep 300ms
+Type "nightly --limit 2 20260303 --json"
+Sleep 500ms
+Enter
+Wait+Screen /created_at/
+Sleep 3s
