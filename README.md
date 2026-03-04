@@ -22,11 +22,12 @@ Usage: nightly [options] [date]
 Unofficial CLI for Changelog Nightly
 
 Arguments:
-  date                  YYYYMMDD, YYYY-MM-DD, or YYYY/MM/DD
+  date                  YYYYMMDD, YYYY-MM-DD, YYYY/MM/DD, or negative offset
 
 Options:
   -v, --version         output the version number
   -l, --limit <number>  limit number of repos displayed
+  --json                output raw JSON
   --no-color            disable ANSI colors in output
   -h, --help            display help for command
 
@@ -35,6 +36,7 @@ Examples:
   nightly 20250115      Show repos for January 15, 2025
   nightly 2025-01-15    Same, with dashes
   nightly 2025/01/15    Same, with slashes
+  nightly -1            Show repos for yesterday
   nightly -l 5          Limit output to 5 repos
 ```
 
